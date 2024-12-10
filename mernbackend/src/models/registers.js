@@ -8,8 +8,7 @@ const employeeSchema = new mongoose.Schema({
       },
       password: {
         type: String,
-        required: true,
-        minlength: 6, // Ensure a minimum length for security
+        required: true
       },
 });
 
