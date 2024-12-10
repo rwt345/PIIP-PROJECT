@@ -7,6 +7,8 @@ const hbs = require("hbs");
 require("./db/conn");
 const Register = require("./models/registers");
 const { name } = require("ejs");
+const { model } = require("mongoose");
+const Vehicle = require("./models/registers");
 
 
 const port = process.env.PORT || 3000;
@@ -48,6 +50,39 @@ app.post("/register",async (req, res) => {
         res.status(400).send(error);
     }
 });
+
+
+
+app.get("/vehicleRegister", (req, res) => {
+    res.render("Vreg");
+});
+
+app.post("/vehicleRegister",async (req, res) => {
+    /
+
+    try {
+        const registerVehicle = new Vehicle({
+            vehicleName: req.body.vehicleName,
+            year: req.body.year,
+            make: req.body.make,
+            model: req.body.make,
+            stateOfRegistration: req.body.stateOfRegistration,
+            purchaseType: req.body.purchaseType,
+            yearOwnedSince: req.body.yearOwnedSince,
+            currentMileage: req.body.currentMileage,
+            image: req.body.image
+        })
+   const vehicleRegistered =  await  registerVehicle.save();
+   res.status(201).render("Vreg");
+
+    }
+    
+    catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+
 
 
 
