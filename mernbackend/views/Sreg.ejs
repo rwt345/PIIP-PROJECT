@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Records Management</title>
+    <link rel="stylesheet" href="/stylesheets/Sstyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Service Records Management</h1>
+
+        <!-- Service Records Form -->
+        <form id="serviceForm" action="/service" method="post">
+            <h2>Add Service Record</h2>
+
+            <label for="serviceId">Service ID:</label>
+            <input type="text" id="serviceId" placeholder="Enter Service ID" required>
+
+            <label for="vehicleId">Vehicle ID:</label>
+            <input type="text" id="vehicleId" placeholder="Enter Vehicle ID" required>
+
+            <label for="serviceDate">Date:</label>
+            <input type="date" id="serviceDate" required>
+
+            <label for="serviceType">Service Type:</label>
+            <select id="serviceType" required>
+                <option value="">Select Service Type</option>
+                <option value="Oil Change">Oil Change</option>
+                <option value="Tire Rotation">Tire Rotation</option>
+                <option value="Brake Inspection">Brake Inspection</option>
+                <option value="Battery Replacement">Battery Replacement</option>
+                <option value="General Maintenance">General Maintenance</option>
+            </select>
+
+            <label for="cost">Cost:</label>
+            <input type="number" id="cost" placeholder="Enter Cost" step="0.01" required>
+
+            <button type="submit">Add Service</button>
+        </form>
+
+        <!-- Service Records Table -->
+        <h2>Service Records</h2>
+        <table id="serviceTable">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Vehicle ID</th>
+                    <th>Date</th>
+                    <th>Service Type</th>
+                    <th>Cost</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="/javascripts/Sscript.js"></script>
+</body>
+</html>

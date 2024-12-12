@@ -97,6 +97,9 @@ app.get("/Creg", (req, res) => {
     res.render("Creg");
 });
 
+app.get("/Sreg", (req, res) => {
+    res.render("Sreg");
+});
 
 
 app.listen(port, () => {
