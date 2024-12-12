@@ -17,7 +17,8 @@ body {
 
 .form-container {
     min-height: auto;
-    background-color: #ffffff;
+    margin-top: 100px;
+    background-color: #fcf7f7;
     padding: 20px;
     justify-content: center;
     align-items: center;
@@ -51,7 +52,7 @@ input, select, button {
     width: 100%;
 }
 
-button {
+/* button {
     background-color: #4CAF50;
     color: white;
     margin-top: 15px;
@@ -61,7 +62,26 @@ button {
 
 button:hover {
     background-color: #45a049;
+} */
+
+
+.button {
+    display: inline-block;  
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;  
+    padding: 10px 20px; 
+    margin-top: 15px;
+    border: none; 
+    cursor: pointer; 
+    text-align: center; 
+    border-radius: 4px; 
 }
+
+.button:hover {
+    background-color: #45a049;
+}
+
 
 small {
     font-size: 12px;

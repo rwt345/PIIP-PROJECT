@@ -10,8 +10,9 @@ body {
 }
 
 .container {
-    background: #fff;
+    background: #fdfafa;
     padding: 20px;
+    max-height: max-content;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 80%;
@@ -53,6 +54,7 @@ button {
 button:hover {
     background-color: #218838;
 }
+
 
 table {
     width: 100%;
