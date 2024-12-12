@@ -6,11 +6,10 @@ const ejs = require("ejs");
 
 require("./src/db/conn.js");
 const Register = require("./src/models/registers.js");
-const { name } = require("ejs");
-const { model } = require("mongoose");
+const mongoose = require("mongoose");
 const Vehicle = require("./src/models/registers.js");
 
-
+app.set("view engine", "ejs");
 
 
 const port = process.env.PORT || 3000;
@@ -19,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use(express.static(path.join (__dirname, "public")));
-app.set("view engine", "ejs");
+
 
 
 app.get("/", (req, res) => {
@@ -30,6 +29,8 @@ app.get("/register", (req, res) => {
     res.render("register");
 });
 
+
+
 app.post("/register",async (req, res) => {
     
 
@@ -39,7 +40,7 @@ app.post("/register",async (req, res) => {
             password: req.body.password
         })
    const registered =  await  registerEmployee.save();
-   res.status(201).render("index");
+   res.render("registered");
 
     }
     
@@ -49,12 +50,24 @@ app.post("/register",async (req, res) => {
 });
 
 
+// app.post("/register", async (req, res) => {
+//     let {name, password} = req.body;
+    
+//   let createdUser = await RegisterModel.create({
+//         name: name,
+//         password: password
+//     });
+//     res.render(createdUser);
+// })
 
-app.get("/vehicleRegister", (req, res) => {
+
+
+
+app.get("/Vreg", (req, res) => {
     res.render("Vreg");
 });
 
-app.post("/vehicleRegister",async (req, res) => {
+app.post("/Vreg", async (req, res) => {
     
 
     try {
@@ -70,7 +83,7 @@ app.post("/vehicleRegister",async (req, res) => {
             image: req.body.image
         })
    const vehicleRegistered =  await  registerVehicle.save();
-   res.render("Vreg");
+   res.render("vehicleRegistered");
 
     }
     
@@ -80,6 +93,9 @@ app.post("/vehicleRegister",async (req, res) => {
 });
 
 
+app.get("/Creg", (req, res) => {
+    res.render("Creg");
+});
 
 
 
