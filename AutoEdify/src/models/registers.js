@@ -2,20 +2,48 @@ const mongoose = require("mongoose");
 
 
 // Define Login Schema
-const employeeSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      password: {
-        type: String,
-        required: true
-      },
+// const employeeSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true,
+//         trim: true,
+//       },
+//       password: {
+//         type: String,
+//         required: true
+//       },
+// });
+
+// const Register = new mongoose.model("Register", employeeSchema);
+// module.exports = Register;
+
+// Define login Schema
+const LoginSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
 });
 
-const Register = new mongoose.model("Register", employeeSchema);
-module.exports = Register;
+// Collection part 
+const collection = new mongoose.model("users", LoginSchema);
+module.exports = collection;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Define the Vehicle Schema

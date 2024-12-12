@@ -1,21 +1,24 @@
 const { log } = require("console");
 const express = require("express");
+const bcrypt = require("bcrypt");
 const path = require("path");
 const app = express();
 const ejs = require("ejs");
 
 require("./src/db/conn.js");
-const Register = require("./src/models/registers.js");
+// const Register = require("./src/models/registers.js");
 const mongoose = require("mongoose");
-const Vehicle = require("./src/models/registers.js");
+// const Vehicle = require("./src/models/registers.js");
+const collection = require("./src/models/registers.js");
+
 
 app.set("view engine", "ejs");
 
 
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.json()); // converting data into json format
+app.use(express.urlencoded({extended:false}));
 
 app.use(express.static(path.join (__dirname, "public")));
 
@@ -25,29 +28,44 @@ app.get("/", (req, res) => {
     res.render("index")
 });
 
+
+
+
 app.get("/register", (req, res) => {
     res.render("register");
 });
 
-
-
-app.post("/register",async (req, res) => {
-    
-
-    try {
-        const registerEmployee = new Register({
-            name: req.body.name,
-            password: req.body.password
-        })
-   const registered =  await  registerEmployee.save();
-   res.render("registered");
-
+// Register User
+app.post("/register", async (req,res) => {
+    const data = {
+        name: req.body.name,
+        password: req.body.password
     }
-    
-    catch (error) {
-        res.status(400).send(error);
-    }
+    const userdata = await collection.insertMany(data);
+    console.log(userdata);
 });
+
+
+// app.post("/register",async (req, res) => {
+    
+
+//     try {
+//         const registerEmployee = new Register({
+//             name: req.body.name,
+//             password: req.body.password
+//         })
+//    const registered =  await  registerEmployee.save();
+//    res.render("registered");
+
+//     }
+    
+//     catch (error) {
+//         res.status(400).send(error);
+//     }
+// });
+
+
+
 
 
 // app.post("/register", async (req, res) => {
