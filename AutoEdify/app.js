@@ -58,6 +58,7 @@ app.get("/Creg", async (req, res) => {
 // 2. Add a new customer
 app.post("/Creg", async (req, res) => {
     const { customerId, customerName, contact, address, customerType } = req.body;
+console.log(req.body);
 
     try {
         const newCustomer = new Customer({
@@ -95,63 +96,87 @@ app.get("/Sreg", async (req, res) => {
 
 // POST /Sreg - Add a new service record
 app.post('/Sreg', async (req, res) => {
-    const { serviceId, vehicleId, serviceDate, serviceType, cost } = req.body;
+    const { id, vehicleId, date, type, cost } = req.body;
 
     try {
         const newServiceRecord = new ServiceRecord({
-            serviceId,
-            vehicleId,
-            serviceDate,
-            serviceType,
-            cost,
+            serviceId:id,
+            vehicleId: vehicleId,
+            serviceDate:date,
+            serviceType:type,
+            cost:cost,
         });
+
 
         await newServiceRecord.save();
         res.status(201).json({ message: 'Service record added successfully.' });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'Failed to add service record.' });
     }
 });
 
-// // PUT /Sreg/:id - Update an existing service record
-// app.put('/Sreg/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const { serviceId, vehicleId, serviceDate, serviceType, cost } = req.body;
 
-//     try {
-//         const updatedServiceRecord = await ServiceRecord.findByIdAndUpdate(
-//             id,
-//             { serviceId, vehicleId, serviceDate, serviceType, cost },
-//             { new: true, runValidators: true } // Return the updated record and validate inputs
-//         );
 
-//         if (!updatedServiceRecord) {
-//             return res.status(404).json({ error: 'Service record not found.' });
-//         }
 
-//         res.status(200).json({ message: 'Service record updated successfully.' });
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to update service record.' });
-//     }
-// });
+// PUT /Sreg/:id - Update an existing service record
+app.put('/Sreg/:id', async (req, res) => {
+    const { id } = req.params;
+    const { serviceId, vehicleId, serviceDate, serviceType, cost } = req.body;
 
-// // DELETE /Sreg/:id - Delete a service record
-// app.delete('/Sreg/:id', async (req, res) => {
-//     const { id } = req.params;
+    try {
+        const updatedServiceRecord = await ServiceRecord.findByIdAndUpdate(
+            id,
+            { serviceId, vehicleId, serviceDate, serviceType, cost },
+            { new: true, runValidators: true } // Return the updated record and validate inputs
+        );
 
-//     try {
-//         const deletedServiceRecord = await ServiceRecord.findByIdAndDelete(id);
+        if (!updatedServiceRecord) {
+            return res.status(404).json({ error: 'Service record not found.' });
+        }
 
-//         if (!deletedServiceRecord) {
-//             return res.status(404).json({ error: 'Service record not found.' });
-//         }
+        res.status(200).json({ message: 'Service record updated successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update service record.' });
+    }
+});
 
-//         res.status(200).json({ message: 'Service record deleted successfully.' });
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to delete service record.' });
-//     }
-// });
+// DELETE /Sreg/:id - Delete a service record
+app.delete('/Sreg/:id', async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const deletedServiceRecord = await ServiceRecord.findByIdAndDelete(id);
+
+        if (!deletedServiceRecord) {
+            return res.status(404).json({ error: 'Service record not found.' });
+        }
+
+        res.status(200).json({ message: 'Service record deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete service record.' });
+    }
+});
+app.get('/Sreg/all', async (req, res) => {
+
+    try {
+        const services = await ServiceRecord.find();
+
+        res.status(200).json({services, message: 'Service record found successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete service record.' });
+    }
+});
+app.get('/Creg/all', async (req, res) => {
+
+    try {
+        const customers = await Customer.find();
+
+        res.status(200).json({customers, message: 'Service record found successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete service record.' });
+    }
+});
 
 
 

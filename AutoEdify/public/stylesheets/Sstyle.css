@@ -47,9 +47,11 @@ input:focus, select:focus {
 }
 
 button {
-    background-color: #28a745;
+    background-color: #3fa122;
     color: white;
     border: none;
+    margin-top: 5px;
+    padding-top: 10px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -58,4 +60,6 @@ button:hover {
     background-color: #218838;
 }
 
-
+/* sub {
+    margin-top: 15px;
+} */

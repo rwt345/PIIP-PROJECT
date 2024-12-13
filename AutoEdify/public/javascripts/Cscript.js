@@ -17,6 +17,31 @@ customerForm.addEventListener("submit", function (e) {
         address: document.getElementById("address").value,
         customerType: document.getElementById("customerType").value,
     };
+    console.log(customer)
+
+    fetch('/Creg', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customer),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            console.log(response);
+        } 
+        return response.json(); // Assuming the server sends JSON response
+    })
+    .then((data) => {
+        console.log('Server response:', data);
+
+        // Optionally handle the response (e.g., show a success message)
+        alert('Customer added successfully!');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Failed to add customer.');
+    });
 
     // Check if it's an update or a new addition    
     const existingIndex = customers.findIndex((c) => c.customerId === customer.customerId);
@@ -67,6 +92,7 @@ function editCustomer(customerId) {
 
 // Delete Customer
 function deleteCustomer(customerId) {
+    console.log(customerId)
     if (confirm("Are you sure you want to delete this customer record?")) {
         customers = customers.filter((c) => c.customerId !== customerId);
         renderCustomers();
@@ -92,7 +118,7 @@ function renderFilteredCustomers(filteredCustomers) {
         row.innerHTML = `
             <td>${customer.customerId}</td>
             <td>${customer.customerName}</td>
-            <td>${customer.contact}</td>
+            <td>${customer.contact}</td>customers
             <td>${customer.address}</td>
             <td>${customer.customerType}</td>
             <td class="action-buttons">

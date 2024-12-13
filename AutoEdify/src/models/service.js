@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const serviceRecordSchema = new mongoose.Schema({
     serviceId: {
         type: String,
-        required: true,
         unique: true, // Ensure serviceId is unique
         trim: true,
     },
@@ -18,7 +17,6 @@ const serviceRecordSchema = new mongoose.Schema({
     },
     serviceType: {
         type: String,
-        required: true,
         enum: [
             "Oil Change",
             "Tire Rotation",
