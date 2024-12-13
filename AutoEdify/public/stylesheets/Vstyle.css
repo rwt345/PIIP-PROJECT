@@ -52,7 +52,7 @@ input, select, button {
     width: 100%;
 }
 
-/* button {
+button {
     background-color: #4CAF50;
     color: white;
     margin-top: 15px;
@@ -62,7 +62,7 @@ input, select, button {
 
 button:hover {
     background-color: #45a049;
-} */
+}
 
 
 .button {
