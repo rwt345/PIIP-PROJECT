@@ -11,12 +11,14 @@ const { connect } = require("http2");
 // const { Customer, Vehicle } = require("./src/models/registers.js");
 const Vehicle = require("./src/models/registers.js")
 const Customer = require("./src/models/customer.js");
+
 const ServiceRecord = require("./src/models/service.js");
 app.set("view engine", "ejs");
 const port = process.env.PORT || 3000;
 app.use(express.json()); // converting data into json format
 app.use(express.urlencoded({extended: true }));
 app.use(express.static(path.join (__dirname, "public")));
+
 app.get("/", (req, res) => {
     res.render("index")
 });
@@ -35,6 +37,7 @@ app.post("/Vreg", async (req, res) => {
             yearOwned: req.body.yearOwned,
             currentMileage: req.body.currentMileage
         });
+        
    // save the new vehicle to the database
    await newVehicle.save();
         // Redirect or send a success response
@@ -48,10 +51,28 @@ app.post("/Vreg", async (req, res) => {
 });
 
 
-
+//customer registration form
 app.get("/Creg", async (req, res) => {
     res.render("Creg");
+
 });
+
+
+// app.get('/Creg', async (req, res) => {
+//     try {
+//         const customers = await Customer.find(); // Fetch all customers from MongoDB
+//         res.json({ customers }); // Respond with JSON object
+//     } catch (error) {
+//         console.error('Error fetching customers:', error);
+//         res.status(500).json({ error: 'Failed to fetch customers' });
+//     }
+// });
+
+
+
+// app.get('/Creg', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'views', 'Creg.ejs')); // Ensure the correct path to your HTML file
+// });
 
 
 
@@ -157,6 +178,7 @@ app.delete('/Sreg/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to delete service record.' });
     }
 });
+
 app.get('/Sreg/all', async (req, res) => {
 
     try {
@@ -167,6 +189,7 @@ app.get('/Sreg/all', async (req, res) => {
         res.status(500).json({ error: 'Failed to delete service record.' });
     }
 });
+
 app.get('/Creg/all', async (req, res) => {
 
     try {

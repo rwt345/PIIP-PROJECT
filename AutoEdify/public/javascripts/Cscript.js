@@ -3,7 +3,114 @@ const customerForm = document.getElementById("customerForm");
 const customerTableBody = document.querySelector("#customerTable tbody");
 const searchInput = document.getElementById("search");
 
-let customers = []; // Local state to hold customer data
+// let customers = [ {
+//     customerId: 123,
+//     customerName: 'Nabbu',
+//     contact: 6526565,
+//     address: 'delhi',
+//     customerType: 'Individual',
+// },
+// {customerId: 523,
+//     customerName: 'Nabbu',
+//     contact: 6526565,
+//     address: 'delhi',
+//     customerType: 'Individual',}]; // Local state to hold customer data
+
+
+let customers =[]; 
+
+
+
+// Function to render customer records in the table
+function renderCustomers(customers) {
+    const customerTableBody = document.querySelector("#customerTable tbody");
+    customerTableBody.innerHTML = ""; // Clear existing rows
+    customers.forEach((customer) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${customer.customerId}</td>
+            <td>${customer.customerName}</td>
+            <td>${customer.contact}</td>
+            <td>${customer.address}</td>
+            <td>${customer.customerType}</td>
+            <td class="action-buttons">
+                <button class="edit" onclick="editCustomer('${customer.customerId}')">Edit</button>
+                <button class="delete" onclick="deleteCustomer('${customer.customerId}')">Delete</button>
+            </td>
+        `;
+        customerTableBody.appendChild(row);
+    });
+}
+
+
+
+// Fetch customers from backend API
+async function fetchCustomers() {
+    console.log("i");
+ 
+        const response = await fetch('http://localhost:3000/Creg/all');
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        
+        renderCustomers(data.customers);
+        customers = data;
+        console.log(customers);
+  
+}
+
+
+
+document.addEventListener('DOMContentLoaded', fetchCustomers);
+
+
+
+
+
+function renderFilteredCustomers(filteredCustomers) {
+    customerTableBody.innerHTML = ""; // Clear the table body
+    filteredCustomers.forEach((customer) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${customer.customerId}</td>
+            <td>${customer.customerName}</td>
+            <td>${customer.contact}</td>
+            <td>${customer.address}</td>
+            <td>${customer.customerType}</td>
+            <td class="action-buttons">
+                <button class="edit" onclick="editCustomer('${customer.customerId}')">Edit</button>
+                <button class="delete" onclick="deleteCustomer('${customer.customerId}')">Delete</button>
+            </td>
+        `;
+        customerTableBody.appendChild(row);
+    });
+}
+
+
+
+// // Function to render customers in the frontend
+// function renderCustomers(customers) {
+//     const customerList = document.getElementById('customerList'); // Assuming an HTML container with this ID
+//     customerList.innerHTML = ''; // Clear any existing content
+
+//     customers.forEach(customer => {
+//         const customerItem = document.createElement('li'); // Create a list item
+//         customerItem.textContent = `${customer.customerId} - ${customer.customerName} - ${customer.contact} - ${customer.address} - ${customerType}`; // Example customer details
+//         customerList.appendChild(customerItem);
+//     });
+// }
+
+// // Call fetchCustomers to load data when the page loads
+// document.addEventListener('DOMContentLoaded', fetchCustomers);
+
+
+
+
+
+
+
 
 
 // Add or Update Customer
@@ -17,7 +124,7 @@ customerForm.addEventListener("submit", function (e) {
         address: document.getElementById("address").value,
         customerType: document.getElementById("customerType").value,
     };
-    console.log(customer)
+    console.log(customer);
 
     fetch('/Creg', {
         method: 'POST',
@@ -53,9 +160,10 @@ customerForm.addEventListener("submit", function (e) {
         customers.push(customer);
     }
 
-    // Refresh the table and reset the form
+     // Refresh the table and reset the form
     renderCustomers();
     customerForm.reset();
+
 });
 
 // Render Customer Table
@@ -77,6 +185,12 @@ function renderCustomers() {
         customerTableBody.appendChild(row);
     });
 }
+
+
+window.onload = renderCustomers;
+
+
+
 // Edit Customer
 function editCustomer(customerId) {
     const customer = customers.find((c) => c.customerId === customerId);
