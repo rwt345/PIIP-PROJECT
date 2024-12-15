@@ -6,23 +6,18 @@ const customerSchema = new Schema({
         unique: true 
     },
     customerName: { 
-        type: String, 
-        
+        type: String        
     },
     contact: { 
-        type: String, 
-    
+        type: String    
     },
     address: { 
-        type: String, 
-    
+        type: String    
     },
     customerType: { 
-        type: String, 
-         
-        enum: ['Individual', 'Corporate'], // Enum for Customer Type
+        type: String,         
+        enum: ['Individual', 'Corporate']
     }
 }, { timestamps: true }); // Include timestamps for created and updated times
 const Customer = mongoose.model("Customer", customerSchema);
-
 module.exports = Customer;

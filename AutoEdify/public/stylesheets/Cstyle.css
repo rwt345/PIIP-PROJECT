@@ -6,7 +6,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
+    overflow: auto;
 }
 
 .container {
@@ -94,3 +95,28 @@ th {
     border: none;
 }
 
+.back-button {
+    position: absolute; 
+            top: 10px;
+            left: 10px;
+            display: inline-block; 
+            width: auto; 
+            padding: 5px 10px; 
+            font-size: 12px;
+            background-color: #1a81ef;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+.back-button:active {
+    transform: scale(0.95); 
+}

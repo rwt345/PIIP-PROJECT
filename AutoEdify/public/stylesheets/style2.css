@@ -12,8 +12,6 @@ html, body{
     overflow-x: hidden;
 }
 
-
-/* Navbar Styling */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -27,14 +25,12 @@ html, body{
     z-index: 1000;
 }
 
-/* Brand Name Styling */
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
     margin-left: 20px;
 }
 
-/* Links Styling */
 .navbar-links {
     list-style: none;
     display: flex;
@@ -54,10 +50,9 @@ html, body{
     color: #007bff;
 }
 
-/* Mobile Responsive Navbar */
 @media (max-width: 768px) {
     .navbar-links {
-        display: none; /* Hide links on small screens */
+        display: none; 
     }
 
     .navbar {
@@ -67,10 +62,6 @@ html, body{
 }
 
 
-
-
-
-/* Main Sections */
 main {
     padding: 20px;
     background-color: #f9f9f9;
@@ -104,7 +95,6 @@ main {
     font-size: 1rem;
 }
 
-/* CTA Section */
 .cta {
     text-align: center;
 }
@@ -128,10 +118,6 @@ main {
 .cta-button:hover {
     background-color: #0056b3;
 }
-
-
-
-
 
 .home{
     position: relative;

@@ -31,7 +31,7 @@ const serviceRecordSchema = new mongoose.Schema({
         min: 0, // Ensure cost is not negative
     },
 }, {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true, 
 });
 
 const ServiceRecord = mongoose.model('ServiceRecord', serviceRecordSchema);

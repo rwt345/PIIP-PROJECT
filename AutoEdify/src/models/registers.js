@@ -40,7 +40,7 @@ const vehicleSchema = new Schema({
         min: 0
     }
 }, {
-    timestamps: true  // Automatically adds createdAt and updatedAt fields
+    timestamps: true 
 });
 
 // // Create the model based on the schema

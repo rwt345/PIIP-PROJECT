@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="/stylesheets/Sstyle.css">
 </head>
 <body>
+    <button id="backButton" class="back-button">Back</button>
     <div class="container">
         <h1>Service Records Management</h1>
 
-        <!-- Service Records Form -->
-        <form id="serviceForm" action="/Sreg" method="post">
+        <!-- Service Form -->
+        <form id="serviceTable">
             <h2>Add Service Record</h2>
 
             <label for="serviceId">Service ID:</label>
@@ -41,6 +42,7 @@
 
         <!-- Service Records Table -->
         <h2>Service Records</h2>
+        <input type="text" id="search" placeholder="Search by Vehicle ID or Service Type">
         <table id="serviceTable">
             <thead>
                 <tr>
@@ -52,7 +54,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody id="serviceTableBody"></tbody>
         </table>
     </div>
 

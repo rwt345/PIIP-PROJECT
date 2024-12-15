@@ -1,31 +1,41 @@
-
-const customerForm = document.getElementById("customerForm");
+const customerTable = document.getElementById("customerTable");
 const customerTableBody = document.querySelector("#customerTable tbody");
 const searchInput = document.getElementById("search");
 
-// let customers = [ {
-//     customerId: 123,
-//     customerName: 'Nabbu',
-//     contact: 6526565,
-//     address: 'delhi',
-//     customerType: 'Individual',
-// },
-// {customerId: 523,
-//     customerName: 'Nabbu',
-//     contact: 6526565,
-//     address: 'delhi',
-//     customerType: 'Individual',}]; // Local state to hold customer data
+
+// Select the back button
+const backButton = document.getElementById("backButton");
+
+// Add click event listener
+backButton.addEventListener("click", function () {
+    // Go to the previous page in browser history
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        alert("No previous page in history.");
+    }
+});
+
 
 
 let customers =[]; 
 
+document.addEventListener('DOMContentLoaded', fetchCustomers);
 
+async function fetchCustomers() { 
+        const response = await fetch('http://localhost:3000/Creg/all');
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();        
+        renderCustomers(data.customers);        
+        customers = data.customers;
+        console.log(customers);
+}
 
-// Function to render customer records in the table
-function renderCustomers(customers) {
-    const customerTableBody = document.querySelector("#customerTable tbody");
-    customerTableBody.innerHTML = ""; // Clear existing rows
-    customers.forEach((customer) => {
+function renderCustomers(c) {
+    customerTableBody.innerHTML = ""; // Clear the table body
+    c.forEach((customer, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${customer.customerId}</td>
@@ -41,33 +51,6 @@ function renderCustomers(customers) {
         customerTableBody.appendChild(row);
     });
 }
-
-
-
-// Fetch customers from backend API
-async function fetchCustomers() {
-    console.log("i");
- 
-        const response = await fetch('http://localhost:3000/Creg/all');
-        if (!response.ok) {
-            throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        
-        renderCustomers(data.customers);
-        customers = data;
-        console.log(customers);
-  
-}
-
-
-
-document.addEventListener('DOMContentLoaded', fetchCustomers);
-
-
-
-
 
 function renderFilteredCustomers(filteredCustomers) {
     customerTableBody.innerHTML = ""; // Clear the table body
@@ -88,35 +71,27 @@ function renderFilteredCustomers(filteredCustomers) {
     });
 }
 
+// Function to edit a customer
+function editCustomer(customerId) {
+    // Find the customer object based on the customerId
+    const customerToEdit = customers.find((customer) => customer.customerId === customerId);
+    if (!customerToEdit) {
+        alert("Customer not found!");
+        return;
+    }
+    // Populate the form fields with the existing customer data
+    document.getElementById("customerId").value = customerToEdit.customerId;
+    document.getElementById("customerName").value = customerToEdit.customerName;
+    document.getElementById("contact").value = customerToEdit.contact;
+    document.getElementById("address").value = customerToEdit.address;
+    document.getElementById("customerType").value = customerToEdit.customerType;
+    // Scroll to the form for better user experience
+    document.getElementById("customerTable").scrollIntoView();
+}
 
-
-// // Function to render customers in the frontend
-// function renderCustomers(customers) {
-//     const customerList = document.getElementById('customerList'); // Assuming an HTML container with this ID
-//     customerList.innerHTML = ''; // Clear any existing content
-
-//     customers.forEach(customer => {
-//         const customerItem = document.createElement('li'); // Create a list item
-//         customerItem.textContent = `${customer.customerId} - ${customer.customerName} - ${customer.contact} - ${customer.address} - ${customerType}`; // Example customer details
-//         customerList.appendChild(customerItem);
-//     });
-// }
-
-// // Call fetchCustomers to load data when the page loads
-// document.addEventListener('DOMContentLoaded', fetchCustomers);
-
-
-
-
-
-
-
-
-
-// Add or Update Customer
-customerForm.addEventListener("submit", function (e) {
+// Handle form submission for editing or adding a customer
+customerTable.addEventListener("submit", function (e) {
     e.preventDefault();
-
     const customer = {
         customerId: document.getElementById("customerId").value,
         customerName: document.getElementById("customerName").value,
@@ -124,92 +99,85 @@ customerForm.addEventListener("submit", function (e) {
         address: document.getElementById("address").value,
         customerType: document.getElementById("customerType").value,
     };
-    console.log(customer);
-
-    fetch('/Creg', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(customer),
-    })
-    .then((response) => {
-        if (!response.ok) {
-            console.log(response);
-        } 
-        return response.json(); // Assuming the server sends JSON response
-    })
-    .then((data) => {
-        console.log('Server response:', data);
-
-        // Optionally handle the response (e.g., show a success message)
-        alert('Customer added successfully!');
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('Failed to add customer.');
-    });
-
-    // Check if it's an update or a new addition    
-    const existingIndex = customers.findIndex((c) => c.customerId === customer.customerId);
-    if (existingIndex >= 0) {
-        // Update the existing customer
-        customers[existingIndex] = customer;
-    } else {
-        // Add a new customer
-        customers.push(customer);
+    
+    // Check if the customer exists for updating
+    const existingCustomerIndex = customers.findIndex((c) => c.customerId === customer.customerId);
+    
+    if (existingCustomerIndex >= 0) {        
+        // Update the existing customer on the backend
+        fetch(`/Creg/${customer.customerId}`, {
+            method: 'PUT', // Use PUT for updating the record
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(customer),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to update customer response not ok");
+            }
+            return response.json();
+        })
+        .then(() => {
+            fetchCustomers();
+        })
+        .catch((error) => {
+            console.error("Error updating customer:", error);
+        });
+    } 
+    else {
+        fetch('/Creg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(customer),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to create customer");
+            }
+            return response.json();
+        })
+        .then(() => {
+            // Refresh the table
+            fetchCustomers();
+        })
+        .catch((error) => {
+            console.error("Error adding customer:", error);
+            alert("Failed to create customer catch block.");
+        });
     }
-
-     // Refresh the table and reset the form
-    renderCustomers();
-    customerForm.reset();
-
+    // Reset the form
+    customerTable.reset();
 });
-
-// Render Customer Table
-function renderCustomers() {
-    customerTableBody.innerHTML = ""; // Clear the table body
-    customers.forEach((customer, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${customer.customerId}</td>
-            <td>${customer.customerName}</td>
-            <td>${customer.contact}</td>
-            <td>${customer.address}</td>
-            <td>${customer.customerType}</td>
-            <td class="action-buttons">
-                <button class="edit" onclick="editCustomer('${customer.customerId}')">Edit</button>
-                <button class="delete" onclick="deleteCustomer('${customer.customerId}')">Delete</button>
-            </td>
-        `;
-        customerTableBody.appendChild(row);
-    });
-}
-
-
-window.onload = renderCustomers;
-
-
-
-// Edit Customer
-function editCustomer(customerId) {
-    const customer = customers.find((c) => c.customerId === customerId);
-    if (customer) {
-        document.getElementById("customerId").value = customer.customerId;
-        document.getElementById("customerName").value = customer.customerName;
-        document.getElementById("contact").value = customer.contact;
-        document.getElementById("address").value = customer.address;
-        document.getElementById("customerType").value = customer.customerType;
-        customerForm.scrollIntoView();
-    }
-}
 
 // Delete Customer
 function deleteCustomer(customerId) {
-    console.log(customerId)
     if (confirm("Are you sure you want to delete this customer record?")) {
-        customers = customers.filter((c) => c.customerId !== customerId);
-        renderCustomers();
+    const existingCustomerIndex = customers.findIndex((c) => c.customerId === customerId);
+    if (existingCustomerIndex >= 0) {        
+        // Update the existing customer on the backend
+        fetch(`/Creg/${customerId}`, {
+            method: 'DELETE', // Use PUT for updating the record
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to update customer response not ok");
+            }
+            return response.json();
+        })
+        .then(() => {
+            fetchCustomers();
+        })
+        .catch((error) => {
+            console.error("Error updating customer:", error);
+            alert("Failed to update customer catch block");
+        });
+      }
     }
 }
 
@@ -232,7 +200,7 @@ function renderFilteredCustomers(filteredCustomers) {
         row.innerHTML = `
             <td>${customer.customerId}</td>
             <td>${customer.customerName}</td>
-            <td>${customer.contact}</td>customers
+            <td>${customer.contact}</td>
             <td>${customer.address}</td>
             <td>${customer.customerType}</td>
             <td class="action-buttons">
@@ -243,7 +211,4 @@ function renderFilteredCustomers(filteredCustomers) {
         customerTableBody.appendChild(row);
     });
 }
-
-
-
 

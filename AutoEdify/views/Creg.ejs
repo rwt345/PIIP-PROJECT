@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="/stylesheets/Cstyle.css">
 </head>
 <body>
+    <button id="backButton" class="back-button">Back</button>
     <div class="container">
         <h1>Customer Management</h1>
 
-        <form id="customerTable" action="/Creg" method="post">
+        <!-- Customer Form -->
+        <form id="customerTable">
+            
             <h2>Add or Edit Customer</h2>
 
             <label for="customerId">Customer ID:</label>
@@ -49,7 +52,6 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            
             <tbody id="customerTableBody"></tbody>
         </table>
     </div>
